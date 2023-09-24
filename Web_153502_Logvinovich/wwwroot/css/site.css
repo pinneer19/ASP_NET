@@ -1,0 +1,38 @@
+header, footer {
+    background-color: rgba(var(--bs-dark-rgb));
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+.nav-item {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    font-weight: normal;
+    margin-right: 20px;
+   
+}
+
+main {
+    font-size: 24px; /* Font size for main content */
+    line-height: 1.5; /* Line spacing */
+}
+
+.form-padding {
+    margin-left: 50px;
+}
+
+.card-description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+}

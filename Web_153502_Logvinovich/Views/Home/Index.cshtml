@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Index";
+    ViewData["title"] = "Лабораторная работа №2";
+}
+@model List<Web_153502_Logvinovich.Models.ListDemo>
+
+
+       
+<h1>@ViewData["title"]</h1>
+
+<!-- Ordered list -->
+<h2>Список</h2>
+
+<ol class="ms-3" type="A">
+    @for(var i = 0; i < 5; i++)
+    {<li>элемент @i списка</li>}
+</ol>
+<hr>
+
+<h2>Форма</h2>
+        
+<!-- Form -->
+<form method="post">
+      
+    <div class="row mb-3">
+               
+        <div class="col-sm-10 offset-sm-2 mb-3">
+
+            <select class="form-select mb-3" asp-items="ViewBag.list" name="selDemo"></select>
+
+            <!-- Checkboxes -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="checkbox1" id="checkbox1">
+                <label class="form-check-label" for="checkbox1">Чек-бокс 1</label>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="checkbox2" id="checkbox2">
+                <label class="form-check-label" for="checkbox2">Чек-бокс 2</label>
+            </div>
+
+            <!-- Radio buttons -->
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="radioGroup" id="radio1" value="radio1">
+                <label class="form-check-label" for="radio1">Радио-1</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="radioGroup" id="radio2" value="radio2">
+                <label class="form-check-label" for="radio2">Радио-2</label>
+            </div>
+                    
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="radioGroup" id="radio3" value="radio3">
+                <label class="form-check-label" for="radio3">Радио-3</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login -->
+    <div class="row align-items-center mb-3">
+        <label for="loginInput" class="col-sm-2 col-form-label">Логин</label>
+        <div class="col-sm-10">
+            <input type="text" placeholder="Введите имя" name="loginInput" class="form-control" id="loginInput">
+        </div>
+    </div>
+                
+    <div class="row align-items-center mb-3">
+        <label for="passwordInput" class="col-sm-2 col-form-label">Пароль</label>
+                
+        <div class="col-sm-10">
+            <input type="password" placeholder="Введите пароль" name="passwordInput" class="form-control" id="passwordInput">
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
