@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using Web_153502_Logvinovich;
 using Web_153502_Logvinovich.Data;
 using Web_153502_Logvinovich.Services.AuthorService;
@@ -18,29 +19,49 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 var uriData = new UriData();
 builder.Configuration.GetSection("UriData").Bind(uriData);
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient<IAuthorService, ApiAuthorService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 builder.Services.AddHttpClient<IBookService, ApiBookService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 
+
 builder.Services.AddAuthentication(opt =>
 {
-opt.DefaultScheme = "cookie";
-opt.DefaultChallengeScheme = "oidc";
+    opt.DefaultScheme = "cookie";
+    opt.DefaultChallengeScheme = "oidc";
 })
-.AddCookie("cookie")
-.AddOpenIdConnect("oidc", options =>
-{
-    options.Authority =
-    builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
-    options.ClientId =
-    builder.Configuration["InteractiveServiceSettings:ClientId"];
-    options.ClientSecret =
-    builder.Configuration["InteractiveServiceSettings:ClientSecret"];
-    // Получить Claims пользователя
-    options.GetClaimsFromUserInfoEndpoint = true;
-    options.ResponseType = "code";
-    options.ResponseMode = "query";
-    options.SaveTokens = true;
-});
+    .AddCookie("cookie")
+    .AddOpenIdConnect("oidc", options =>
+    {
+        options.Authority = builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
+        options.ClientId = builder.Configuration["InteractiveServiceSettings:ClientId"];
+        options.ClientSecret = builder.Configuration["InteractiveServiceSettings:ClientSecret"];
+        //options.Events.OnRedirectToIdentityProvider = redirectContext =>
+        //{
+        //    if (redirectContext.Request.Path.StartsWithSegments("/Admin"))
+        //    {
+        //        if (redirectContext.Response.StatusCode == (int)HttpStatusCode.OK)
+        //        {
+        //            redirectContext.ProtocolMessage.State = options.StateDataFormat.Protect(redirectContext.Properties);
+        //        }
+                
+        //    }
+        //    return Task.CompletedTask;
+        //};
+
+        // Получить Claims пользователя
+        //options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+        //options.CorrelationCookie.SameSite = SameSiteMode.None;
+        options.GetClaimsFromUserInfoEndpoint = true;
+        options.ResponseType = "code";
+        options.ResponseMode = "query";
+        options.SaveTokens = true;
+    });
+//builder.Services.AddAuthorization
+//    (options =>
+//        {
+//            options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+//        }
+//    );
 var app = builder.Build();
 
 app.UseAuthentication();

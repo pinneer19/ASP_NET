@@ -26,12 +26,9 @@ builder.Services
 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(opt =>
 {
-    opt.Authority = builder
-    .Configuration
-    .GetSection("isUri").Value;
+    opt.Authority = builder.Configuration.GetSection("isUri").Value;
     opt.TokenValidationParameters.ValidateAudience = false;
-    opt.TokenValidationParameters.ValidTypes =
-    new[] { "at+jwt" };
+    opt.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
 });
 
 
@@ -46,7 +43,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();

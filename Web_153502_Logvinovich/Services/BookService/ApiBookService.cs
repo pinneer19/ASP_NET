@@ -1,8 +1,10 @@
 ﻿using Azure;
 using Azure.Core;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Data.SqlTypes;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -17,7 +19,9 @@ namespace Web_153502_Logvinovich.Services.BookService
         private readonly string _pageSize;
         private readonly ILogger<ApiBookService> _logger;
         private readonly JsonSerializerOptions _serializerOptions;
-        public ApiBookService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiBookService> logger)
+        private readonly HttpContext _httpContext;
+
+        public ApiBookService(HttpClient httpClient, IConfiguration configuration, ILogger<ApiBookService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _pageSize = configuration.GetSection("ItemsPerPage").Value;
@@ -26,11 +30,14 @@ namespace Web_153502_Logvinovich.Services.BookService
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
             _logger = logger;
+            _httpContext = httpContextAccessor.HttpContext;
         }
 
         public async Task<ResponseData<Book>> CreateBookAsync(Book book, IFormFile? formFile)
         {
-            
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Books");
             var response = await _httpClient.PostAsJsonAsync(uri, book, _serializerOptions);
             if (response.IsSuccessStatusCode)
@@ -56,6 +63,7 @@ namespace Web_153502_Logvinovich.Services.BookService
 
         private async Task SaveImageAsync(int id, IFormFile image)
         {
+            
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -65,11 +73,17 @@ namespace Web_153502_Logvinovich.Services.BookService
             var streamContent = new StreamContent(image.OpenReadStream());
             content.Add(streamContent, "formFile", image.FileName);
             request.Content = content;
+
+            var token = await _httpContext.GetTokenAsync("access_token");
+            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+
             await _httpClient.SendAsync(request);
         }
 
         public async Task DeleteBookAsync(int id)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             // DELETE: api/Books/5
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}books/");
             urlString.Append($"{id}");
@@ -78,6 +92,9 @@ namespace Web_153502_Logvinovich.Services.BookService
 
         public async Task<ResponseData<Book>> GetBookByIdAsync(int id)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}books/");
             urlString.Append($"{id}");
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
@@ -113,8 +130,6 @@ namespace Web_153502_Logvinovich.Services.BookService
             // подготовка URL запроса
             var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}books/");
 
-            
-
             // добавить категорию в маршрут
             if (authorNormalizedName != null)
             {
@@ -142,6 +157,9 @@ namespace Web_153502_Logvinovich.Services.BookService
 
         public async Task UpdateBookAsync(int id, Book book, IFormFile? formFile)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + $"Books/{id}");
             var response = await _httpClient.PutAsJsonAsync(uri, book, _serializerOptions);
             if (formFile != null)
@@ -158,6 +176,9 @@ namespace Web_153502_Logvinovich.Services.BookService
 
         private async Task<ResponseData<ListModel<Book>>> parseData(StringBuilder urlString)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
             if (response.IsSuccessStatusCode)
             {

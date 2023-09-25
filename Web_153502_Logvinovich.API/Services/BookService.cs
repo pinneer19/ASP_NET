@@ -124,7 +124,7 @@ namespace Web_153502_Logvinovich.API.Services
                 responseData.ErrorMessage = "No item found";
                 return responseData;
             }
-            var host = "http://" + _httpContextAccessor.HttpContext.Request.Host;
+            var host = "https://" + _httpContextAccessor.HttpContext.Request.Host;
             var imageFolder = Path.Combine(_environment.WebRootPath, "Images");
             if (formFile != null)
             {

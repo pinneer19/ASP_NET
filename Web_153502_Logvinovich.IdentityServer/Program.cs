@@ -1,11 +1,15 @@
-﻿using Serilog;
+using Serilog;
 using Web_153502_Logvinovich.IdentityServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Web_153502_Logvinovich.IdentityServer.Data;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
 Log.Information("Starting up");
+//app.UseAuthentication();
 
 try
 {
@@ -19,7 +23,7 @@ try
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
-
+    app.UseAuthentication();    
     // this seeding is only for the template to bootstrap the DB and users.
     // in production you will likely want a different approach.
     //    if (args.Contains("/seed"))

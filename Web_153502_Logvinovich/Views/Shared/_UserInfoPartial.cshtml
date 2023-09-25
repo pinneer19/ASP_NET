@@ -1,30 +1,42 @@
 ﻿@{
+
 }
 
-@await Component.InvokeAsync("Cart")
-
-<div class="dropdown ms-4 nav-color">
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="navbar-nav ms-auto">
+        <a asp-controller="Identity" asp-action="Login" class="nav-item nav-link">Login</a>
+    </div>
+}
+else {
+    
+    var login = User.Claims.FirstOrDefault(c => c.Type.Equals("Name", StringComparison.OrdinalIgnoreCase))?.Value ?? "default@gmail.com";
+    
+    @await Component.InvokeAsync("Cart")
+    <div class="dropdown ms-4 nav-color">
     <button class="btn btn-secondary dropdown-toggle"
             type="button" id="dropdownMenuButton"
             data-bs-toggle="dropdown"
             aria-expanded="false">
-        User@gmail.com
-        <img src="images/avatar.png" width="30" height="30" alt="User" class="rounded nav-color" />
+            @login
+            <img src="data:image/png;base64,@ViewBag.Base64Avatar" width="30" height="30" alt="User" class="rounded nav-color" />
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <li>
             <span class="dropdown-item-text">
-                <img src="images/avatar.png" width="50" height="50" alt="User" class="rounded" />
-                user@gmail.com
+                    <img src="data:image/png;base64,@ViewBag.Base64Avatar" width="50" height="50" alt="User" class="rounded" />
+                @login
             </span>
         </li>
         <li><hr class="dropdown-divider"></li>
         <li>
+
             <form id="logoutForm" class="form-inline">
-                <button id="logout" type="submit" asp-controller="Identity" asp-action="LogOut" class="text-dark nav-link btn btn-link" style="background:none; border: none">
+                <button id="logout" type="submit" asp-controller="Identity" asp-action="Logout" class="text-dark nav-link btn btn-link" style="background:none; border: none">
                     Logout
                 </button>
             </form>
         </li>
     </ul>
 </div>
+}
