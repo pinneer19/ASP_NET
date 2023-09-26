@@ -69,10 +69,11 @@ namespace Web_153502_Logvinovich.IdentityServer
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseStaticFiles();
             app.UseRouting();
             app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             app.MapRazorPages()

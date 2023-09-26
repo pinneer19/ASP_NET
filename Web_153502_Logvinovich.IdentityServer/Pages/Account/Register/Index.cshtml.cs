@@ -116,6 +116,7 @@ namespace Web_153502_Logvinovich.IdentityServer.Pages.Register
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        var a = User.Identity.IsAuthenticated;
                         return LocalRedirect(returnUrl);
                     }
                 }

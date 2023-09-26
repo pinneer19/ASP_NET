@@ -23,7 +23,7 @@ try
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
-    app.UseAuthentication();    
+    app.UseAuthentication();
     // this seeding is only for the template to bootstrap the DB and users.
     // in production you will likely want a different approach.
     //    if (args.Contains("/seed"))

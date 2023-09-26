@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using Web_153502_Logvinovich;
 using Web_153502_Logvinovich.Data;
 using Web_153502_Logvinovich.Services.AuthorService;
@@ -35,37 +38,24 @@ builder.Services.AddAuthentication(opt =>
         options.Authority = builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
         options.ClientId = builder.Configuration["InteractiveServiceSettings:ClientId"];
         options.ClientSecret = builder.Configuration["InteractiveServiceSettings:ClientSecret"];
-        //options.Events.OnRedirectToIdentityProvider = redirectContext =>
-        //{
-        //    if (redirectContext.Request.Path.StartsWithSegments("/Admin"))
-        //    {
-        //        if (redirectContext.Response.StatusCode == (int)HttpStatusCode.OK)
-        //        {
-        //            redirectContext.ProtocolMessage.State = options.StateDataFormat.Protect(redirectContext.Properties);
-        //        }
-                
-        //    }
-        //    return Task.CompletedTask;
-        //};
-
-        // Получить Claims пользователя
-        //options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-        //options.CorrelationCookie.SameSite = SameSiteMode.None;
+        var scopes = builder.Configuration.GetSection("InteractiveServiceSettings:Scopes").Get<IEnumerable<string>>();
+        options.Scope.AddRange(scopes);
         options.GetClaimsFromUserInfoEndpoint = true;
         options.ResponseType = "code";
         options.ResponseMode = "query";
         options.SaveTokens = true;
     });
-//builder.Services.AddAuthorization
-//    (options =>
-//        {
-//            options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-//        }
-//    );
+
 var app = builder.Build();
 
-app.UseAuthentication();
-app.MapRazorPages().RequireAuthorization();
+//app.UseForwardedHeaders(new ForwardedHeadersOptions
+//{
+//    ForwardedHeaders = ForwardedHeaders.XForwardedProto
+//});
+
+//app.MapRazorPages().RequireAuthorization();
+
+//app.UseForwardedHeaders(new ForwardedHeadersOptions { ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto });
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -83,6 +73,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 //app.MapControllerRoute(    
 //      name: "areas",
@@ -96,6 +88,6 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+app.MapRazorPages().RequireAuthorization();
 
 app.Run();

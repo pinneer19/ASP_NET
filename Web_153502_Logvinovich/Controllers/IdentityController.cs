@@ -7,7 +7,6 @@ namespace Web_153502_Logvinovich.Controllers
     {
         public async Task Login()
         {
-            
             await HttpContext.ChallengeAsync(
                 "oidc",
                 new AuthenticationProperties { RedirectUri = Url.Action("Index", "Home") }
@@ -19,11 +18,7 @@ namespace Web_153502_Logvinovich.Controllers
         {
             await HttpContext.SignOutAsync("cookie");
             await HttpContext.SignOutAsync("oidc",
-            new AuthenticationProperties
-            {
-                RedirectUri =
-            Url.Action("Index", "Home")
-            });
+            new AuthenticationProperties { RedirectUri = Url.Action("Index", "Home") });
         }
     }
 }

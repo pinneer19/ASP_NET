@@ -33,7 +33,7 @@ builder.Services
 
 
 var app = builder.Build();
-app.UseAuthentication();
+
 await DbInitializer.SeedData(app);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -43,6 +43,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
