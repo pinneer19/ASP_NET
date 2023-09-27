@@ -8,7 +8,6 @@ namespace Web_153502_Logvinovich.IdentityServer.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
     public class AvatarController : ControllerBase
     {
         private readonly IWebHostEnvironment _environment;
@@ -21,6 +20,7 @@ namespace Web_153502_Logvinovich.IdentityServer.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAvatar()
         {
             // Путь к папке, где хранятся аватары пользователей
@@ -37,14 +37,6 @@ namespace Web_153502_Logvinovich.IdentityServer.Controllers
             {
                 var placeholderFilePath = Path.Combine(_environment.ContentRootPath, "Images", "avatar.png"); 
                 return GetAvatarFile(placeholderFilePath);
-                //var contentTypeProvider = new FileExtensionContentTypeProvider();
-                //if (!contentTypeProvider.TryGetContentType("avatar.png", out var contentType))
-                //{
-                //    contentType = "application/octet-stream";
-                //}
-
-                //// Return the placeholder file
-                //return File(fileBytes, contentType);
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,18 +41,7 @@ namespace Web_153502_Logvinovich.Areas.Admin.Views.Books
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
-        {
-            //bool state = ModelState.IsValid;
-            //if(!state)
-            //{
-            //    Book.Author = _author_service.GetAuthorListAsync().Result.Data.FirstOrDefault(x => x.Id == AuthorId) ?? throw new Exception("Author was not found");
-            //    state = TryValidateModel(Book);
-            //}
-            //if (!state||  Book == null || Image == null)
-            //{
-            //    await InitializeAuthors();
-            //    return Page();
-            //}
+        { 
             // почему то не валидирует даже после добавления автора
             if (Book == null || Image == null)
             {

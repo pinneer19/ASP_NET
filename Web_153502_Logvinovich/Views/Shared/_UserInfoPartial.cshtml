@@ -19,20 +19,20 @@ else {
             data-bs-toggle="dropdown"
             aria-expanded="false">
             @login
-            <img src="data:@ViewBag.ContentType;base64,@ViewBag.Base64Avatar" width="30" height="30" alt="User" class="rounded nav-color" />
+            <img src="https://localhost:7003/avatar" width="30" height="30" alt="User" class="rounded nav-color" />
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <li>
             <span class="dropdown-item-text">
-                    <img src="data:@ViewBag.ContentType;base64,@ViewBag.Base64Avatar" width="50" height="50" alt="User" class="rounded" />
+                    <img src="https://localhost:7003/avatar" width="50" height="50" alt="User" class="rounded" />
                 @login
             </span>
         </li>
         <li><hr class="dropdown-divider"></li>
         <li>
 
-            <form id="logoutForm" class="form-inline" method="post">
-                <button id="logout" type="submit" asp-controller="Identity" asp-action="Logout" class="text-dark nav-link btn btn-link" style="background:none; border: none">
+            <form id="logoutForm" asp-controller="Identity" asp-action="Logout" class="form-inline" method="post">
+                <button id="logout" type="submit" class="text-dark nav-link btn btn-link" style="background:none; border: none">
                     Выйти
                 </button>
             </form>

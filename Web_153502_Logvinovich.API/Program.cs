@@ -36,6 +36,12 @@ var app = builder.Build();
 
 await DbInitializer.SeedData(app);
 // Configure the HTTP request pipeline.
+
+app.UseCors(opt =>
+{
+    opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -43,10 +49,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseStaticFiles();
-app.MapControllers();
 //app.UseRouting();
 //app.MapControllerRoute(
 //    name: "pager1",
