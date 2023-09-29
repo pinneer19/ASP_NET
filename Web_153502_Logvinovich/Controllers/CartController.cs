@@ -9,41 +9,35 @@ namespace Web_153502_Logvinovich.Controllers
 {
     public class CartController : Controller
     {
-        //private readonly Cart _cart;
-        private readonly IBookService _bookService;
-        private readonly HttpContext _context;
+        private readonly Cart _cart;
+        private readonly IBookService _bookService;        
 
-        public CartController(IBookService bookService)
+        public CartController(IBookService bookService, Cart cart)
         {
-            //_cart = cart;
             _bookService = bookService;
+            _cart = cart;
         }
 
         public IActionResult Index()
         {
-            Cart cart = HttpContext.Session.Get<Cart>("cart") ?? new();
-            return View(cart.CartItems);
+            return View(_cart.CartItems);
         }
 
         [Authorize]
         [Route("[controller]/add/{id:int}")]
         public async Task<IActionResult> AddBookToCart(int id, string returnurl)
         {
-            Cart cart = HttpContext.Session.Get<Cart>("cart") ?? new();
             var book = await _bookService.GetBookByIdAsync(id) ?? throw new Exception("No book with such id"); 
-            cart.AddToCart(book.Data);
-            HttpContext.Session.Set<Cart>("cart", cart);
+            _cart.AddToCart(book.Data);
             return Redirect(returnurl);
         }
 
         [Authorize]
         [Route("[controller]/delete/{id:int}")]
         public async Task<IActionResult> DeleteBookFromCart(int id)
-        {
-            Cart cart = HttpContext.Session.Get<Cart>("cart") ?? new();
-            cart.RemoveItems(id);
-            HttpContext.Session.Set<Cart>("cart", cart);
-            return View("Index", cart.CartItems);
+        {            
+            _cart.RemoveItems(id);       
+            return View("Index", _cart.CartItems);
         }
 
 
@@ -51,10 +45,8 @@ namespace Web_153502_Logvinovich.Controllers
         [Route("[controller]/clear")]
         public async Task<IActionResult> ClearCart()
         {
-            Cart cart = HttpContext.Session.Get<Cart>("cart") ?? new();
-            cart.ClearAll();
-            HttpContext.Session.Set<Cart>("cart", cart);
-            return View("Index", cart.CartItems);
+            _cart.ClearAll();   
+            return View("Index", _cart.CartItems);
         }
 
     }

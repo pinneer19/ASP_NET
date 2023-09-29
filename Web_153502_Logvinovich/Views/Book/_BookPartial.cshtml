@@ -1,4 +1,5 @@
-﻿<div class="container mt-3">
+﻿
+<div class="container mt-3">
     @{
         var request = ViewContext.HttpContext.Request;
         var returnUrl = request.Path + request.QueryString.ToUriComponent();
@@ -14,7 +15,7 @@
                         <h4 class="card-title">@book.Name</h4>
                         <p class="card-text card-description">@book.Description</p>
                         <a asp-controller="Cart" asp-action="AddBookToCart" asp-route-id="@book.Id" asp-route-returnurl="@returnUrl" class="btn btn-primary align-content-center">Добавить в корзину</a>
-                    </div>
+                    </div>  
                 </div>
             </div>
         }

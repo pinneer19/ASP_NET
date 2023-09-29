@@ -8,19 +8,16 @@ namespace Web_153502_Logvinovich.Components
     [ViewComponent]
     public class CartViewComponent
     {
-        //private readonly Cart _cart;
-        private readonly HttpContext _context;
-        public CartViewComponent(IHttpContextAccessor context)//Cart cart)
+        private readonly Cart _cart;
+        
+        public CartViewComponent(Cart cart)
         {
-            _context = context.HttpContext;
-            //_cart = cart;
+            _cart = cart;
         }
         public HtmlString Invoke()
         {
-            
-            var cart = _context.Session.Get<Cart>("cart") ?? new();
-            var total_price = cart.TotalPrice;
-            var amount = cart.Count;
+            var total_price = _cart.TotalPrice;
+            var amount = _cart.Count;
             return new HtmlString($"<a class=\"navbar-text ms-auto\" href=\"\\Cart\\Index\\\">{total_price} руб <i class=\"fa-solid fa-cart-shopping\"></i> ({amount})</a>");
         }
     }

@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using Web_153502_Logvinovich;
 using Web_153502_Logvinovich.Data;
 using Web_153502_Logvinovich.Domain.Entities;
+using Web_153502_Logvinovich.Services;
 using Web_153502_Logvinovich.Services.AuthorService;
 using Web_153502_Logvinovich.Services.BookService;
 
@@ -32,16 +33,6 @@ builder.Services.AddAuthentication(opt =>
         options.SaveTokens = true;
     });
 
-
-// Add services to the container.
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(connectionString));
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
-
 var uriData = new UriData();
 builder.Configuration.GetSection("UriData").Bind(uriData);
 
@@ -52,7 +43,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
-//builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 
 var app = builder.Build();
 

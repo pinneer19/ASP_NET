@@ -62,7 +62,7 @@ namespace Web_153502_Logvinovich.TagHelpers
 
             var a = new TagBuilder("a");
             a.AddCssClass("page-link");
-
+            a.Attributes.Add("style", "cursor: pointer");
             var uri = "";
 
             if (!Admin)
