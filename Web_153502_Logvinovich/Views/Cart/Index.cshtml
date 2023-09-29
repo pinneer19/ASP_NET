@@ -1,0 +1,32 @@
+﻿
+@model Dictionary<int, Web_153502_Logvinovich.Domain.Entities.CartItem>;
+
+<h1>Ваша корзина</h1>
+
+<table class="table">
+    <tbody>
+        @foreach (var cartItem in Model.Values)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => cartItem.Book.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cartItem.Book.Description)
+                </td>
+                <td>
+                    <img src="@cartItem.Book.Image">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cartItem.Book.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => cartItem.Amount)
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="Cart" asp-action="DeleteBookFromCart" asp-route-id="@cartItem.Book.Id"><i class="bi bi-trash"></i>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

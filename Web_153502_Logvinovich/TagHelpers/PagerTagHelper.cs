@@ -21,7 +21,7 @@ namespace Web_153502_Logvinovich.TagHelpers
         public string Author { get; set; }
 
         [HtmlAttributeName("admin")]
-        public bool Admin { get; set; }
+        public bool Admin { get; set; } = false;
 
         public PagerTagHelper(LinkGenerator linkGenerator, IHttpContextAccessor context)
         {
@@ -62,11 +62,19 @@ namespace Web_153502_Logvinovich.TagHelpers
 
             var a = new TagBuilder("a");
             a.AddCssClass("page-link");
-            
-            var routeValues = new { pageNo, Author, Admin };
-            var uri = _linkGenerator.GetPathByPage(_context, values: routeValues);
-            
-            a.Attributes.Add("href", uri);
+
+            var uri = "";
+
+            if (!Admin)
+            {
+                uri = _linkGenerator.GetUriByAction(_context, action: "Index", controller: "Book", values: new { pageNo, Author });
+                a.Attributes.Add("ajax", uri);
+            }
+            else
+            {
+                uri = _linkGenerator.GetPathByPage(_context, page: "Index", values: new { area="Admin", pageNo });
+                a.Attributes.Add("href", uri);
+            }
             
             if (text == null)
             {

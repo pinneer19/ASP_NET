@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Web_153502_Logvinovich;
 using Web_153502_Logvinovich.Data;
+using Web_153502_Logvinovich.Domain.Entities;
 using Web_153502_Logvinovich.Services.AuthorService;
 using Web_153502_Logvinovich.Services.BookService;
 
@@ -49,7 +50,9 @@ builder.Services.AddHttpClient<IAuthorService, ApiAuthorService>(opt => opt.Base
 builder.Services.AddHttpClient<IBookService, ApiBookService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+//builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 
 var app = builder.Build();
 
@@ -85,5 +88,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages().RequireAuthorization();
+app.UseSession();
 
 app.Run();

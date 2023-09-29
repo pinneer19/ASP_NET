@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using Web_153502_Logvinovich.Domain.Entities;
+using Web_153502_Logvinovich.Domain.Models;
 using Web_153502_Logvinovich.Services.BookService;
 
 namespace Web_153502_Logvinovich.Areas.Admin.Views.Books
@@ -17,13 +18,13 @@ namespace Web_153502_Logvinovich.Areas.Admin.Views.Books
             _service = service;
         }
 
-        public IList<Book> Book { get;set; } = default!;
+        public ListModel<Book> Book { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int pageNo = 1)
         {
             
-            var books = await _service.GetBookListAsync("all", 1);
-            Book = books.Data.Items;  
+            var books = await _service.GetBookListAsync(null, pageNo);
+            Book = books.Data;  
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using Web_153502_Logvinovich.Extensions;
 using Web_153502_Logvinovich.Services.AuthorService;
 using Web_153502_Logvinovich.Services.BookService;
@@ -16,8 +17,8 @@ namespace Web_153502_Logvinovich.Controllers
 			_bookService = bookService;
 			_authorService = authorService;
 		}
-
-		[Route("[controller]/{author?}")]
+		[Route("[controller]")]
+		[Route("Catalog/{author}/{pageNo=1}")]
 		public async Task<IActionResult> Index(string? author, int pageNo = 1)
 		{
             var authors = _authorService.GetAuthorListAsync().Result.Data.AsEnumerable();
@@ -28,14 +29,14 @@ namespace Web_153502_Logvinovich.Controllers
 			ViewBag.authors = authors;
 			ViewBag.books = productResponse.Data.Items.AsEnumerable();
 			ViewBag.pageCount = productResponse.Data.TotalPages;
-			ViewBag.currentAuthorName = author == null ? "Все" : authors.First(it => it.NormalizedName.Equals(author)).Name;
+			ViewBag.currentAuthorName = author.IsNullOrEmpty() || author == "all" ? "Все" : authors.First(it => it.NormalizedName.Equals(author)).Name;
 
             ViewData["currentAuthor"] = author;
 			ViewData["currentPage"] = productResponse.Data.CurrentPage;
 
 			if(Request.IsAjaxRequest())
 			{
-				return PartialView("_BookPartial");
+				return PartialView("_BookPartial", productResponse.Data);
 			}
             return View(productResponse.Data);
 		}
