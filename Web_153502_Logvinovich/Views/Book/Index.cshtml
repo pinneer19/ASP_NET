@@ -26,7 +26,6 @@
                 {
                     <li>
                         <a class="dropdown-item"
-                        data-
                         asp-controller="book"
                         asp-route-author="@item.NormalizedName">
                             @item.Name
@@ -38,41 +37,6 @@
     </ul>
 </div><!-- выбор категории -->
 
-<div class="container mt-3">
-    @{
-        var request = ViewContext.HttpContext.Request;
-        var returnUrl = request.Path + request.QueryString.ToUriComponent();
-    }
-    <div class="row">
-        @foreach(var book in ViewBag.books)
-        {
-                    
-            <div class="col-4 mb-xl-5">
-                <div class="card h-100">
-                    <img src="@book.Image" style="width: 200px; height: 200px;" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4 class="card-title">@book.Name</h4>
-                        <p class="card-text card-description" >@book.Description</p>
-                        <a asp-route-returnurl="@returnUrl" class="btn btn-primary align-content-center">Добавить в корзину</a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+<div id="partialData">
+    <partial name="_BookPartial"/>
 </div>
-@{
-    //string? author = request.RouteValues["author"]?.ToString(); ?????????
-    int prev = Model.CurrentPage == 1 ? 1 : Model.CurrentPage - 1;
-    int next = Model.CurrentPage == Model.TotalPages ? Model.TotalPages : Model.CurrentPage + 1;
-}
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" asp-route-author="@ViewData["currentAuthor"]" asp-route-pageNo="@prev">Previous</a></li>
-        @for(var num = 1; num < ViewBag.pageCount + 1; ++num)
-        {
-            <li class="page-item @(ViewData["currentPage"].Equals(num) ? "active" : "")"><a asp-route-author="@ViewData["currentAuthor"]" asp-route-pageNo="@num" class="page-link" as="">@num</a></li>
-        }
-        <li class="page-item"><a class="page-link" asp-route-author="@ViewData["currentAuthor"]" asp-route-pageNo="@next">Next</a></li>
-    </ul>
-</nav>
-

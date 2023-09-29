@@ -1,0 +1,24 @@
+﻿<div class="container mt-3">
+    @{
+        var request = ViewContext.HttpContext.Request;
+        var returnUrl = request.Path + request.QueryString.ToUriComponent();
+    }
+    <div class="row">
+        @foreach (var book in ViewBag.books)
+        {
+
+            <div class="col-4 mb-xl-5">
+                <div class="card h-100">
+                    <img src="@book.Image" style="width: 200px; height: 200px;" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h4 class="card-title">@book.Name</h4>
+                        <p class="card-text card-description">@book.Description</p>
+                        <a asp-route-returnurl="@returnUrl" class="btn btn-primary align-content-center">Добавить в корзину</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<Pager current-page="@Model.CurrentPage" total-pages="@Model.TotalPages" author="@ViewData["currentAuthor"]"></Pager>

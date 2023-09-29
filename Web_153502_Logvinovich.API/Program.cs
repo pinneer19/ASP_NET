@@ -60,10 +60,3 @@ app.UseAuthorization();
 //    defaults: new { controller = "Home", action = "Index" }
 //);
 app.Run();
-
-// GET: api/Books
-//// [Route("api/Books/{author}/{pageNo}")]
-//[HttpGet]
-//[HttpGet("{author}/page{pageNo:int}")]
-//[HttpGet("page{pageNo:int}")]
-//[HttpGet("{author}")]

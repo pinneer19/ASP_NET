@@ -54,7 +54,7 @@ namespace Web_153502_Logvinovich.API.Controllers
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
             if (id != book.Id)
@@ -86,7 +86,7 @@ namespace Web_153502_Logvinovich.API.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<ResponseData<Book>> PostBook(Book book)
         {
             var newBook = await _bookService.CreateBookAsync(book, null);
@@ -94,7 +94,7 @@ namespace Web_153502_Logvinovich.API.Controllers
         }
 
         [HttpPost("id")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<ResponseData<string>> PostImageBook(int id, [FromForm] IFormFile formFile)
         {            
             return await _bookService.SaveImageAsync(id , formFile);
@@ -102,7 +102,7 @@ namespace Web_153502_Logvinovich.API.Controllers
 
         //// DELETE: api/Books/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> DeleteBook(int id)
         {
             await _bookService.DeleteBookAsync(id);
