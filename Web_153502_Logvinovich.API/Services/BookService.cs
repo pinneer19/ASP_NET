@@ -60,25 +60,13 @@ namespace Web_153502_Logvinovich.API.Services
 
     public async Task<ResponseData<ListModel<Book>>> GetBookListAsync(string? authorNormalizedName, int pageNo = 1, int pageSize = 3)
         {
-            if (authorNormalizedName == "all")
-            {
-                
-                return new ResponseData<ListModel<Book>>
-                {
-                    Data = new ListModel<Book>
-                    {
-                        Items = _context.Books.Include(d=>d.Author).ToList(),
-                        CurrentPage = pageNo,
-                        TotalPages = 0
-                    },
-                    Success = false,
-                    ErrorMessage = "No such page"
-                };
-            }
             if (pageSize > _maxPageSize) pageSize = _maxPageSize;
-            var query = _context.Books.AsQueryable();
+            var query = _context.Books.Include(book => book.Author).AsQueryable();
             var dataList = new ListModel<Book>();
-            query = query.Include(d=>d.Author).Where(d => authorNormalizedName == null || d.Author.NormalizedName.Equals(authorNormalizedName));
+            if (authorNormalizedName != "all")
+            {
+                query = query.Where(d => authorNormalizedName == null || d.Author.NormalizedName.Equals(authorNormalizedName));
+            }
             // количество элементов в списке
             var count = query.Count();
             if (count == 0)

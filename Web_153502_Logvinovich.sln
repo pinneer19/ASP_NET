@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web_153502_Logvinovich.Doma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web_153502_Logvinovich.API", "Web_153502_Logvinovich.API\Web_153502_Logvinovich.API.csproj", "{3D58F228-3D81-4793-8CED-847DE72732FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_153502_Logvinovich.IdentityServer", "Web_153502_Logvinovich.IdentityServer\Web_153502_Logvinovich.IdentityServer.csproj", "{50C695B4-D919-46F2-B7FE-85873CC3FA5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web_153502_Logvinovich.IdentityServer", "Web_153502_Logvinovich.IdentityServer\Web_153502_Logvinovich.IdentityServer.csproj", "{50C695B4-D919-46F2-B7FE-85873CC3FA5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_153502_Logvinovich.Tests", "Web_153502_Logvinovich.Tests\Web_153502_Logvinovich.Tests.csproj", "{666F53DA-7297-4F33-BC46-12F714FF0B7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{50C695B4-D919-46F2-B7FE-85873CC3FA5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50C695B4-D919-46F2-B7FE-85873CC3FA5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50C695B4-D919-46F2-B7FE-85873CC3FA5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666F53DA-7297-4F33-BC46-12F714FF0B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666F53DA-7297-4F33-BC46-12F714FF0B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666F53DA-7297-4F33-BC46-12F714FF0B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666F53DA-7297-4F33-BC46-12F714FF0B7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

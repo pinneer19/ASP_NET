@@ -14,13 +14,13 @@
                 href="#"                      
                 role="button"
                 aria-expanded="false">
-                @ViewBag.currentAuthorName
+                @ViewData["currentAuthor"]
             </a>
             <ul class="dropdown-menu">
                 <li>
                     <a class="dropdown-item"
                         asp-controller="book"
-                        asp-route-author=@null>Все</a>
+                        asp-route-author="all">Все</a>
                 </li>
                 @foreach (var item in ViewBag.authors)
                 {

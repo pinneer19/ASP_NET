@@ -56,7 +56,7 @@ namespace Web_153502_Logvinovich.Areas.Admin.Views.Books
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (Book == null || Image == null)
+            if (Book == null)
             {
                 await InitializeAuthors();
                 return Page();

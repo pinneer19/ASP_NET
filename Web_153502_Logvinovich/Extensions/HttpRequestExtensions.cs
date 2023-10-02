@@ -4,7 +4,7 @@
     {
         public static bool IsAjaxRequest(this HttpRequest request)
         {
-            return request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            return request != null && request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }
     }
 }

@@ -136,10 +136,10 @@ namespace Web_153502_Logvinovich.Services.BookService
                 urlString.Append($"{authorNormalizedName}/");
             }
 
-            if (authorNormalizedName == "all")
-            {
-                return await parseData(urlString);
-            }
+            //if (authorNormalizedName == "all")
+            //{
+            //    return await parseData(urlString);
+            //}
 
             // добавить номер страницы в маршрут
             if (pageNo > 1)

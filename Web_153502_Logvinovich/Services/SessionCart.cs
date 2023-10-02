@@ -5,9 +5,7 @@ using Web_153502_Logvinovich.Extensions;
 namespace Web_153502_Logvinovich.Services
 {
     public class SessionCart: Cart
-    {
-        private readonly HttpContext _context;
-        
+    {  
         public static Cart GetCart(IServiceProvider services)
         {
             ISession? session = services.GetRequiredService<IHttpContextAccessor>().HttpContext?.Session;

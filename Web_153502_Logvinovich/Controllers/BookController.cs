@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
+using Web_153502_Logvinovich.Domain.Entities;
 using Web_153502_Logvinovich.Extensions;
 using Web_153502_Logvinovich.Services.AuthorService;
 using Web_153502_Logvinovich.Services.BookService;
@@ -17,23 +18,25 @@ namespace Web_153502_Logvinovich.Controllers
 			_bookService = bookService;
 			_authorService = authorService;
 		}
-		[Route("[controller]")]
+		//[Route("[controller]")]
 		[Route("Catalog/{author}/{pageNo=1}")]
 		public async Task<IActionResult> Index(string? author, int pageNo = 1)
 		{
-            var authors = _authorService.GetAuthorListAsync().Result.Data.AsEnumerable();
-			var productResponse = await _bookService.GetBookListAsync(author, pageNo);
+            var authorsResponse = await _authorService.GetAuthorListAsync();
+
+            // если список не получен, вернуть код 404
+            if (!authorsResponse.Success)
+                return NotFound(authorsResponse.ErrorMessage);
+
+            ViewBag.authors = authorsResponse.Data.AsEnumerable();
+
+			ViewData["currentAuthor"] = author.IsNullOrEmpty() || author == "all" ? "Все" : authorsResponse.Data.FirstOrDefault(it => it.NormalizedName.Equals(author))?.Name;
+			ViewBag.author = author;
+            var productResponse = await _bookService.GetBookListAsync(author, pageNo);
+
 			if (!productResponse.Success)
 				return NotFound(productResponse.ErrorMessage);
 			
-			ViewBag.authors = authors;
-			ViewBag.books = productResponse.Data.Items.AsEnumerable();
-			ViewBag.pageCount = productResponse.Data.TotalPages;
-			ViewBag.currentAuthorName = author.IsNullOrEmpty() || author == "all" ? "Все" : authors.First(it => it.NormalizedName.Equals(author)).Name;
-
-            ViewData["currentAuthor"] = author;
-			ViewData["currentPage"] = productResponse.Data.CurrentPage;
-
 			if(Request.IsAjaxRequest())
 			{
 				return PartialView("_BookPartial", productResponse.Data);

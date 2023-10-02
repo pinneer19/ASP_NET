@@ -5,7 +5,7 @@
         var returnUrl = request.Path + request.QueryString.ToUriComponent();
     }
     <div class="row">
-        @foreach (var book in ViewBag.books)
+        @foreach (var book in Model.Items)
         {
 
             <div class="col-4 mb-xl-5">
@@ -22,4 +22,4 @@
     </div>
 </div>
 
-<Pager current-page="@Model.CurrentPage" total-pages="@Model.TotalPages" author="@ViewData["currentAuthor"]"></Pager>
+<Pager current-page="@Model.CurrentPage" total-pages="@Model.TotalPages" author="@ViewContext.RouteData.Values["author"]"></Pager>
