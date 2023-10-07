@@ -8,6 +8,6 @@
 <a class="navbar-brand" href="/">WebLabsV02</a>
 <div class="navbar-nav">
     <a class="nav-item nav-link @(controller=="home"?"active":"")" asp-action="Index" asp-controller="Home">Лб 1</a>
-    <a class="nav-item nav-link @(controller == "book" ? "active" : "")" asp-area="" asp-route-author="all" asp-action="Index" asp-controller="Book">Каталог</a>
+    <a class="nav-item nav-link @(controller == "book" ? "active" : "")" asp-area="" asp-action="Index" asp-controller="Book">Каталог</a>
     <a class="nav-item nav-link @(controller == String.Empty ? "active" : "")" asp-area="Admin" asp-controller="" asp-action="Index">Администрирование</a>
 </div>

@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
+using Serilog;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Web_153502_Logvinovich;
 using Web_153502_Logvinovich.Data;
 using Web_153502_Logvinovich.Domain.Entities;
+using Web_153502_Logvinovich.Middleware;
 using Web_153502_Logvinovich.Services;
 using Web_153502_Logvinovich.Services.AuthorService;
 using Web_153502_Logvinovich.Services.BookService;
@@ -45,7 +47,13 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+builder.Host.UseSerilog();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 
@@ -80,5 +88,8 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages().RequireAuthorization();
 app.UseSession();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseSerilogRequestLogging();
 
 app.Run();

@@ -1,0 +1,33 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item @(DataService.CurrentPage == 1 ? "disabled" : "")"><button class="page-link" @onclick="() => onPagerClicked(DataService.CurrentPage - 1)">Previous</button></li>
+        @for (var num = 1; num < DataService.TotalPages + 1; ++num)
+        {
+            var number = num; // cringe solution? (always passes Dataservice.TotalPages + 1 instead of current num)
+            <li class="page-item @(DataService.CurrentPage == num ? "active" : "")"><button class="page-link" @onclick="() => onPagerClicked(number)" as="">@num</button></li>
+        }
+        <li class="page-item @(DataService.TotalPages == DataService.CurrentPage ? "disabled" : "")"><button @onclick="() => onPagerClicked(DataService.CurrentPage + 1)" class="page-link" href="#">Next</button></li>
+    </ul>
+</nav>
+
+@code {
+    [Parameter]
+    public string? Author { get; set; }
+
+    private void onPagerClicked(int page)
+    {
+        DataService.GetBookListAsync(Author, page);
+    }
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

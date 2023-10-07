@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
+using static System.Net.WebRequestMethods;
 
 namespace Web_153502_Logvinovich.IdentityServer
 {
@@ -47,6 +48,16 @@ namespace Web_153502_Logvinovich.IdentityServer
 
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "api.read", "api.write" }
+            },
+            new Client
+            {
+                ClientId = "blazorApp",
+                AllowedGrantTypes = GrantTypes.Code,
+                RequireClientSecret = false,
+                RedirectUris = {"https://localhost:7071/authentication/login-callback" },
+                PostLogoutRedirectUris = {"https://localhost:7071/authentication/logout-callback" },
+                AllowOfflineAccess = true,
+                AllowedScopes = { "openid", "profile", "api.read","api.write"}
             },
             };
     }

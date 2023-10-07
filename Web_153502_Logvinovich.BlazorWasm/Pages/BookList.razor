@@ -1,0 +1,35 @@
+﻿@page "/catalog"
+@page "/catalog/{author}"
+
+<PageTitle>Book list</PageTitle>
+<AuthorSelector SelectedAuthor="@SelectedName"/>
+<BooksComponent BookSelected="@FindBook"/>
+<Pager Author="@Author"/>
+<BookDetails SelectedBook="@SelectedBook"/>
+
+@code {
+
+    [Inject]
+    public IDataService DataService { get; set; }
+
+    [Parameter] 
+    public string Author { get; set; }
+
+    [Parameter]
+    public Book SelectedBook { get; set; }
+
+    public string SelectedName { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await DataService.GetBookListAsync(Author);
+        if (Author != null) SelectedName = DataService.Authors.FirstOrDefault(c => c.NormalizedName.Equals(Author))?.Name ?? "Все";
+        else SelectedName = "Все";
+    }
+
+    private void FindBook(int id)
+    {
+        SelectedBook = DataService.BookList.First(book => book.Id == id);
+        StateHasChanged();
+    }
+}

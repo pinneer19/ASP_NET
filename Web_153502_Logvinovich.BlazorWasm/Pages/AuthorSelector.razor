@@ -1,0 +1,40 @@
+﻿@inject IDataService DataService
+
+@if(DataService.Authors != null)
+{
+    <!-- выбор категории -->
+   <div class="dropdown"> 
+        <a class="btn btn-secondary dropdown-toggle"
+            data-bs-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-expanded="false">
+            @SelectedAuthor
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+                <a class="dropdown-item" href="/catalog/all">Все</a>
+            </li>
+            @foreach (var item in DataService.Authors)
+            {
+                <li>
+                    <a class="dropdown-item" href="/catalog/@item.NormalizedName">@item.Name</a>
+                </li>
+            }
+        </ul>
+   
+    </div>
+
+    <!-- выбор категории -->
+}
+
+@code {
+    [Parameter]
+    public string? SelectedAuthor { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DataService.GetAuthorListAsync();
+    }
+
+}

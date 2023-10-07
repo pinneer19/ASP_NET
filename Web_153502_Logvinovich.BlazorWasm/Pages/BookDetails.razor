@@ -1,0 +1,43 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+@if (SelectedBook != null)
+{
+    <div class="card">
+        <div class="row no-gutters">
+            <div class="col-md-2">
+                <img src="@SelectedBook.Image" style="width: 200px; height: 200px;" class="card-img" alt="...">
+            </div>
+            <div class="col-md-9">
+                <div class="card-body">
+                    <h4 class="card-title">@SelectedBook.Name</h4>
+                    <p class="card-text">@SelectedBook.Description</p>
+                    <p class="card-text"><strong>Author:</strong> @SelectedBook.Author.Name</p>
+                    <p class="card-text"><strong>Price:</strong> @SelectedBook.Price</p>
+                </div>
+            </div>
+            <button class="col-md-1 align-items-md-center btn btn-danger" @onclick="clearBook"><span class="oi oi-x"></span></button>
+        </div>
+    </div>
+}
+@code {
+
+    [Parameter]
+    public Book? SelectedBook { get; set; }
+
+    private void clearBook()
+    {
+        SelectedBook = null;
+        //StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

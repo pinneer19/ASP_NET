@@ -19,7 +19,7 @@ namespace Web_153502_Logvinovich.Controllers
 			_authorService = authorService;
 		}
 		//[Route("[controller]")]
-		[Route("Catalog/{author}/{pageNo=1}")]
+		[Route("Catalog/{author=all}/{pageNo=1}")]
 		public async Task<IActionResult> Index(string? author, int pageNo = 1)
 		{
             var authorsResponse = await _authorService.GetAuthorListAsync();

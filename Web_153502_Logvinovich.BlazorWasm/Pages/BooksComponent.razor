@@ -1,0 +1,56 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+<h1>Book list</h1>
+
+<p>This component demonstrates fetching data from the api.</p>
+
+@if (DataService.BookList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in DataService.BookList)
+            {
+                <tr>
+                    <td>@book.Name</td>
+                    <td>
+                        <button type="button" @onclick="() => GetBookInfo(book.Id)" class="btn btn-outline-primary"><span class="oi oi-magnifying-glass"></span>Details</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    public delegate void BookSearchDelegate(int id);
+
+    [Parameter]
+    public BookSearchDelegate BookSelected { get; set; }
+
+    private void GetBookInfo(int id)
+    {
+        BookSelected.Invoke(id);
+    }
+
+	protected override void OnInitialized()
+	{
+		DataService.DataLoaded += StateHasChanged;
+	}
+	public void Dispose()
+	{
+		DataService.DataLoaded -= StateHasChanged;
+	}
+}

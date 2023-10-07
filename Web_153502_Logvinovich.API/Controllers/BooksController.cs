@@ -35,7 +35,7 @@ namespace Web_153502_Logvinovich.API.Controllers
         [HttpGet("{author}/page{pageNo:int}")]
         [HttpGet("page{pageNo:int}")]
         [HttpGet("{author}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<ResponseData<IEnumerable<Book>>>> GetBooks(string? author, int pageNo = 1, int pageSize = 3)
         {
             return Ok(await _bookService.GetBookListAsync(author, pageNo, pageSize));
@@ -43,7 +43,7 @@ namespace Web_153502_Logvinovich.API.Controllers
 
         //GET: api/Books/5
         [HttpGet("{id:int}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
